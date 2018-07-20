@@ -17,6 +17,12 @@ public class VoteUtil {
     private static final Logger LOGGER = Logger.getLogger(VoteUtil.class.getName());
 
     static public void voteOnBuildResult(Result result, TaskListener listener, GitLabClient client, MergeRequest mergeRequest) {
+        if (mergeRequest == null) {
+            listener.error("No merge request found, cannot add vote.");
+            LOGGER.log(Level.SEVERE, "No merge request found, cannot add vote.");
+            return;
+        }
+
         boolean alreadyAwarded = false;
         try {
             Integer userId = client.getCurrentUser().getId();
